@@ -67,3 +67,60 @@ def extract_sub_dtw_mat(dtw_matrix : np.array, labels : np.array, indexes : list
             sub_dtw_matrix[j, i] = sub_dtw_matrix[i, j]
 
     return sub_dtw_matrix, labels[indexes]
+
+
+def get_dtw_alignment(S_ref: np.array, S: np.array):
+    """
+        Renvoie l'alignement correspondant à la DTW 
+
+        Entrées :
+            S_ref : np.array (1D) 
+                Séquence de référence
+            S : np.array (1D)
+                Séquence à aligner
+        
+        Sortie :
+            alignement : list de sets
+                Alignement entre les indices de S_ref et S
+    """
+    
+    n, m = len(S_ref), len(S)
+    C = np.zeros([n, m])    # Matrice de coût
+
+    C[0, 0] = (S_ref[0] - S[0])**2
+    for i in range(1, n) :
+        C[i, 0] = C[i-1, 0] + (S_ref[i] - S[0])**2
+    for j in range(1, n) :
+        C[0, j] = C[0, j-1] + (S_ref[0] - S[j])**2
+
+    # Remplissage de la matrice de coût
+    for i in range(1, n):
+        for j in range(1, m):
+            C[i, j] = (S_ref[i] - S[j])**2 + min(C[i-1, j-1], C[i-1, j], C[i, j-1])
+    
+    
+    alignment = [set() for _ in range(n)]
+    # On commence en bas à droite de la matrice de coût
+    i = n - 1
+    j = m - 1
+
+    # Backtracking pour retrouver l'alignement associé à la DTW
+    while i > 0 or j > 0 :
+        alignment[i].add(j)
+
+        if i == 0 : 
+            j += -1
+        elif j == 0 :
+            i += -1
+        else :
+            if C[i-1, j-1] <= C[i-1, j] and C[i-1, j-1] <= C[i, j-1]:
+                i += -1
+                j += -1
+            elif C[i-1, j] <= C[i, j-1]:
+                i += -1
+            else : 
+                j += -1
+
+    alignment[i].add(j)
+
+    return alignment
