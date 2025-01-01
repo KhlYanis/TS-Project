@@ -2,4 +2,4 @@ numpy
 matplotlib.pyplot
 seaborn
 joblib
-csv
+tqdm

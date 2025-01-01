@@ -41,21 +41,18 @@ def get_dtw_distance(x: np.array, y: np.array) -> np.float32:
     return dtw_distance
 
 
-def extract_sub_dtw_mat(dtw_matrix : np.array, labels : np.array, indexes : list):
+def extract_sub_dtw_mat(dtw_matrix : np.array, indexes : list):
     """
         Extrait la matrice DTW et les classes pour une sous-partie de l'ensemble d'entrainement
 
         Entrées :
             dtw_matrix : np.array (2D) 
                 Matrice DTW de l'ensemble d'entrainement
-            labels : np.array (1D) 
-                Classes de l'ensemble d'entrainement
             indexes : (list) 
                 Liste des indices du sous-ensemble
 
         Sorties:
             np.array (2D) : Matrice DTW du sous-ensemble 
-            np.array (1D) : Liste des classes pour le sous-ensemble
     """
     size = len(indexes)
     # Initialisation de la matrice DTW pour le sous-ensemble d'entrainement
@@ -66,7 +63,7 @@ def extract_sub_dtw_mat(dtw_matrix : np.array, labels : np.array, indexes : list
             sub_dtw_matrix[i, j] = dtw_matrix[indexes[i], indexes[j]]
             sub_dtw_matrix[j, i] = sub_dtw_matrix[i, j]
 
-    return sub_dtw_matrix, labels[indexes]
+    return sub_dtw_matrix
 
 
 def get_dtw_alignment(S_ref: np.array, S: np.array):
