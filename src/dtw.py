@@ -121,3 +121,41 @@ def get_dtw_alignment(S_ref: np.array, S: np.array):
     alignment[i].add(j)
 
     return alignment
+
+def get_dtw_distance_vectorized(x: np.array, y: np.array):
+    """
+    Calcule la distance DTW entre une série temporelle x et chaque ligne de y.
+
+        Entrées :
+            x : np.array (1D) Série temporelle de taille m.
+            y : np.array (2D) de taille k*n, k séries temporelle de taille n.
+    """
+    m = len(x)
+    k, n = y.shape
+
+    D = np.zeros((k, m, n)) 
+    C = np.zeros((k, m, n))  
+
+    # Utilisation du broadcasting pour la distance euclidienne
+    for i in range(k):
+        D[i] = (x[:, None] - y[i, :]) ** 2 
+
+    C[:, 0, 0] = D[:, 0, 0]
+
+    for i in range(1, m):
+        C[:, i, 0] = C[:, i-1, 0] + D[:, i, 0]
+
+    for j in range(1, n):
+        C[:, 0, j] = C[:, 0, j-1] + D[:, 0, j]
+
+    for i in range(1, m):
+        for j in range(1, n):
+            C[:, i, j] = D[:, i, j] + np.minimum.reduce([
+                C[:, i-1, j-1],  # Diagonal
+                C[:, i-1, j],    # Vertical
+                C[:, i, j-1]     # Horizontal
+            ])
+
+    dtw_distances = np.sqrt(C[:, m-1, n-1])
+
+    return dtw_distances
