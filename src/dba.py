@@ -20,7 +20,7 @@ def get_approximate_medoid_index(dtw_matrix : np.array, id_D: list, subset_size 
     np.random.seed(seed)
     set_size = len(id_D)
 
-    assert subset_size < set_size, f"Le nombre d'échantillon pour approximer doit être inférieure à la taille de l'ensemble"
+    assert subset_size <= set_size, f"Le nombre d'échantillon pour approximer doit être inférieure à la taille de l'ensemble"
     
     # Echantillonage des indices
     indexes = np.random.choice(range(0, set_size), subset_size, replace = False)
@@ -61,6 +61,8 @@ def DBA_update(T_init: np.array, D : list) -> np.array:
     for i in range(L):
         if alignment[i] :
             T_updated[i] = np.mean(list(alignment[i]))
+        else : 
+            T_updated[i] = 0
 
     return T_updated
 
