@@ -16,7 +16,7 @@ def get_approximate_medoid_index(dtw_matrix : np.array, id_D: list, subset_size 
         Sortie :
             Indice du médoide 
     """
-    
+
     np.random.seed(seed)
     set_size = len(id_D)
 
@@ -26,7 +26,7 @@ def get_approximate_medoid_index(dtw_matrix : np.array, id_D: list, subset_size 
     indexes = np.random.choice(range(0, set_size), subset_size, replace = False)
 
     # Calcul de la matrice DTW du sous-ensemble
-    sub_dtw, _ = dtw.extract_sub_dtw_mat(dtw_matrix, id_D[indexes]) 
+    sub_dtw = dtw.extract_sub_dtw_mat(dtw_matrix, id_D[indexes]) 
 
     # Indice du médoide
     return np.argmin(np.sum(sub_dtw, axis = 1))
@@ -54,17 +54,17 @@ def DBA_update(T_init: np.array, D : list) -> np.array:
     for S in D :
         S_alignment = dtw.get_dtw_alignment(T_init, S)
         for i in range(L):
-            alignment[i].extend([S[j] for j in S_alignment[i]])
+            alignment[i].update([S[j] for j in S_alignment[i]])
 
         
     T_updated = np.zeros([L])
     for i in range(L):
         if alignment[i] :
-            T_updated[i] = np.mean(alignment[i])
+            T_updated[i] = np.mean(list(alignment[i]))
 
     return T_updated
 
-def DBA(D : list, id_D : list, nb_iter : int, dtw_matrix : np.array, subset_size : int) -> np.array :
+def DBA(D : list, id_D, nb_iter : int, dtw_matrix : np.array, subset_size : int) -> np.array :
     """
        Fonction pour calculer une séquence moyenne pour un ensemble de séquences 
        en utilisant la méthode DBA
