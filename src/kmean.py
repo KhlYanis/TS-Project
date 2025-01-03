@@ -54,7 +54,7 @@ class KMeans():
             # Mise à jour des centroides en utilisant DBA
             for centroid in dic_clusters_sorted.keys():
                 seq_to_avg = [X[i,:] for i in dic_clusters_sorted[centroid]]
-                new_centroid = DBA(seq_to_avg, dic_clusters_sorted[centroid], self.dba_iters, dtw_matrix, len(dic_clusters_sorted[centroid]))
+                new_centroid = DBA(X, seq_to_avg, dic_clusters_sorted[centroid], self.dba_iters, dtw_matrix, len(dic_clusters_sorted[centroid]))
                 new_centroids.append(new_centroid)
 
             new_centroids = np.array(new_centroids)

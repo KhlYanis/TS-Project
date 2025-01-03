@@ -66,12 +66,14 @@ def DBA_update(T_init: np.array, D : list) -> np.array:
 
     return T_updated
 
-def DBA(D : list, id_D, nb_iter : int, dtw_matrix : np.array, subset_size : int) -> np.array :
+def DBA(X : np.array, D : list, id_D, nb_iter : int, dtw_matrix : np.array, subset_size : int) -> np.array :
     """
        Fonction pour calculer une séquence moyenne pour un ensemble de séquences 
        en utilisant la méthode DBA
 
        Entrées : 
+            X : np.array (2D)
+                Dataset initial
             D : list de np.array (1D)
                 Ensemble de séquences à moyenner
             id_D : list de int
@@ -90,7 +92,7 @@ def DBA(D : list, id_D, nb_iter : int, dtw_matrix : np.array, subset_size : int)
 
     medoid_index = get_approximate_medoid_index(dtw_matrix, id_D, subset_size)
 
-    T = D[medoid_index]
+    T = X[medoid_index,:]
 
     for iter in range(nb_iter):
         T = DBA_update(T, D)

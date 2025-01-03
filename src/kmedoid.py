@@ -4,7 +4,7 @@ from src.dtw import get_dtw_distance_vectorized
 from src.dba import DBA, get_approximate_medoid_index
 
 
-class kmedoid():
+class KMedoid():
     def __init__(self, nb_clusters, max_iter=100, eps=0.1):
         # Initialisation des hyperparamètres du K-Means
         self.nb_clusters = nb_clusters
@@ -30,6 +30,15 @@ class kmedoid():
         return sorted(centroids)
 
     def fit(self, X, dtw_matrix):
+        """
+            Fonction pour entrainer le modèle K-Medoid 
+
+            Entrées :
+                - X : np.array (2D)
+                    Array avec les séries temporelle de l'ensemble d'entrainement
+                - dtw_matrix : np.array (2D)
+                    Matrice DTW associée à l'ensemble d'entrainement
+        """
         # Initialisation des centroids avec la méthode kmean++
         centroids = self._init_centroids(X, dtw_matrix)
 
