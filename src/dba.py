@@ -29,7 +29,7 @@ def get_approximate_medoid_index(dtw_matrix : np.array, id_D: list, subset_size 
     sub_dtw = dtw.extract_sub_dtw_mat(dtw_matrix, list(np.array(id_D)[indexes]))
 
     # Indice du médoide
-    return np.argmin(np.sum(sub_dtw, axis = 1))
+    return id_D[indexes[np.argmin(np.sum(sub_dtw, axis = 1))]]
 
 
 def DBA_update(T_init: np.array, D : list) -> np.array:
