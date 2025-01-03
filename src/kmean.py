@@ -73,7 +73,7 @@ class KMeans():
 
         test_set_size = X.shape[0]
 
-        predictions = np.array([test_set_size])
+        predictions = np.zeros([test_set_size])
 
         for idx, ts in enumerate(X):
             # Calcul de la distance DTW par rapport aux centroides des K clusters
