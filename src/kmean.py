@@ -33,6 +33,7 @@ class kmeans():
                 cluster_signal = np.argmin(get_dtw_distance_vectorized(X[indice_signal,:], centroids))
                 dic_clusters[cluster_signal].append(indice_signal)
             dic_clusters_sorted = {i:sorted(liste) for i,liste in dic_clusters.items()}
+            print(dic_clusters_sorted)
             for centroid in dic_clusters_sorted.keys():
                 seq_to_avg = [X[i,:] for i in dic_clusters_sorted[centroid]]
                 new_centroid = DBA(seq_to_avg, dic_clusters_sorted[centroid], 4, dtw_matrix, len(dic_clusters_sorted[centroid]))
