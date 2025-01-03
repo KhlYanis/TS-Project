@@ -23,7 +23,7 @@ def get_approximate_medoid_index(dtw_matrix : np.array, id_D: list, subset_size 
     assert subset_size <= set_size, f"Le nombre d'échantillon pour approximer doit être inférieure à la taille de l'ensemble"
     
     # Echantillonage des indices
-    indexes = np.random.choice(range(0, set_size), subset_size, replace = False)
+    indexes = sorted(np.random.choice(range(0, set_size), subset_size, replace = False))
     
     # Calcul de la matrice DTW du sous-ensemble
     sub_dtw = dtw.extract_sub_dtw_mat(dtw_matrix, list(np.array(id_D)[indexes]))
