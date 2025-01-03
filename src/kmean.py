@@ -5,11 +5,13 @@ from src.dba import DBA
 
 
 class KMeans():
-    def __init__(self, nb_clusters, max_iter=100, eps=0.1):
+    def __init__(self, nb_clusters, max_iter=100, eps=0.1, dba_iter = 10):
         # Initialisation des hyperparamètres du K-Means
         self.nb_clusters = nb_clusters
         self.max_iter = max_iter
         self.eps = eps
+
+        self.dba_iters = dba_iter
     
     def _init_centroids(self, X, dtw_matrix):
         # Initialisation des centroides avec la méthode K-Means++
@@ -52,7 +54,7 @@ class KMeans():
             # Mise à jour des centroides en utilisant DBA
             for centroid in dic_clusters_sorted.keys():
                 seq_to_avg = [X[i,:] for i in dic_clusters_sorted[centroid]]
-                new_centroid = DBA(seq_to_avg, dic_clusters_sorted[centroid], 4, dtw_matrix, len(dic_clusters_sorted[centroid]))
+                new_centroid = DBA(seq_to_avg, dic_clusters_sorted[centroid], self.dba_iters, dtw_matrix, len(dic_clusters_sorted[centroid]))
                 new_centroids.append(new_centroid)
 
             new_centroids = np.array(new_centroids)
