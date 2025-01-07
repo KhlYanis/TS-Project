@@ -46,7 +46,9 @@ class AGH():
             for cluster in clusters:
                 min_cluster = (np.inf, None)
                 for other_cluster in clusters-set([cluster]):
-                    dist  = np.min(dtw_matrix[sorted(list(cluster)), sorted(list(other_cluster))])
+                    dtw_mat = dtw_matrix[sorted(list(cluster)),:]
+                    dtw_mat = dtw_mat[:, sorted(list(other_cluster))]
+                    dist  = np.min(dtw_mat)
                     if dist < min_cluster[0]:
                         min_cluster = (dist, other_cluster)
                 min_dist[cluster] = min_cluster
