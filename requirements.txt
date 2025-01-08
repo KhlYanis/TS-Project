@@ -3,3 +3,7 @@ matplotlib.pyplot
 seaborn
 joblib
 tqdm
+tslearn
+scikit-learn
+pickle
+collections
